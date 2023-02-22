@@ -4,15 +4,8 @@ This repo contains [GitHub Action Reusable Workflows](https://docs.github.com/en
 
 ## Workflows
 
-- `security-scan`
-
 ## `security-scan`
 This is a quick, holistic scan of the source code in your repo leveraging the [ShiftLeft Scanner](https://github.com/ShiftLeftSecurity/sast-scan). It is capable of blocking Pull Request status checks for vulnerabilities found (Critical and High). Or it can conduct non-blocking scans while still producing an artifact. 
-
-| Parameter | Default| Description
-| --- | --- | --- |
-| enforce-status-check | false | Will fail a status check for vulnerabilities found
-| file-name | 'security-scan-artifacts' | Name for zip file of scan artifacts
 
 It will automatically assess and run the following (where applicable):
 - Static Code Analysis
@@ -20,6 +13,11 @@ It will automatically assess and run the following (where applicable):
 - Credential Detection Scans
 - Infrastructure as Code (IaC) Analysis
 - Dockerfile and Kubernetes Analysis
+
+| Parameter | Default| Description
+| --- | --- | --- |
+| enforce-status-check | false | Will fail a status check for vulnerabilities found
+| file-name | 'security-scan-artifacts' | Name for zip file of scan artifacts
 
 To set up this workflow, create a new file, `{repo_root}/.github/workflows/security-scan.yml` and paste in the following:
 
