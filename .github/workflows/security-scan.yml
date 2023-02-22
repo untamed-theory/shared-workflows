@@ -1,0 +1,38 @@
+name: Untamed Theory - Static Security Scan
+
+on: 
+  workflow_call:
+    inputs:
+      enforce-status-check:
+        description: 'Set to "true" to block status from vulnerability findings (defaults "false")'
+        default: false
+        required: false
+        type: boolean
+      file-name:
+        description: 'Set artifact zip file name. Overwrites the default name "security-scan-artifacts"'
+        default: security-scan-artifacts
+        required: false
+        type: string
+
+jobs:
+  Security-Scans:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run Security Scans - Status Check Enforced
+        if: ${{ inputs.enforce-status-check }}
+        run : |
+          docker run --rm -e "WORKSPACE=${PWD}" -e "GITHUB_TOKEN=${GITHUB_TOKEN}" -v "/$PWD:/app:cached" shiftleft/scan scan 
+      - name: Run Security Scans
+        if: ${{ !inputs.enforce-status-check }}
+        run : |
+          docker run --rm -e "WORKSPACE=${PWD}" -e "GITHUB_TOKEN=${GITHUB_TOKEN}" -v "/$PWD:/app:cached" shiftleft/scan scan --no-error
+      - name: Upload Scan Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.file-name }}
+          path: reports/
+          retention-days: 5
+
+
