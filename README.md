@@ -21,7 +21,7 @@ It will automatically assess and run the following (where applicable):
 
 To set up this workflow, create a new file, `{repo_root}/.github/workflows/security-scan.yml` and paste in the following:
 
-```
+```yaml
 name: "My Security Scan"
 on:
     pull_request:
