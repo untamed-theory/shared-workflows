@@ -4,21 +4,39 @@ This repo contains [GitHub Action Reusable Workflows](https://docs.github.com/en
 
 ## Workflows
 
-## `security-scan`
-This is a quick, holistic scan of the source code in your repo leveraging the [ShiftLeft Scanner](https://github.com/ShiftLeftSecurity/sast-scan). It is capable of blocking Pull Request status checks for vulnerabilities found (Critical and High). Or it can conduct non-blocking scans while still producing an artifact. 
+### ci-security-scan
+To set up the CI security workflow, create a new file, `{repo_root}/.github/workflows/ci-security-scan.yml` and paste in the folowing:
 
-It will automatically assess and run the following (where applicable):
-- Static Code Analysis
-- Dependency Vulnerability Scans
-- Credential Detection Scans
-- Infrastructure as Code (IaC) Analysis
-- Dockerfile and Kubernetes Analysis
+```yaml
+name: "CI Security Scan"
+on:
+    pull_request:
+        types: - opened
+        branches:
+            - master
+            - main
+            - develop
+jobs:
+    run-security-scan:
+        name: 'Untamed Theory CI Security Scan'
+        uses: untamed-theory/shared-workflows/.github/workflows/ci-security-scan.yml@main
+
+```
+
+This workflow automatically scans CI configuration files for known injectable syntax and other known security vulnerabilities and misconfigurations. It leverages the Checkov scanner under the hood.
+
+It will detect and assess:
+- GitHub Actions workflow files
+- GitLab CI files
+- Bitbucket pipelines configurations files
+
 
 | Parameter | Default| Description
 | --- | --- | --- |
 | enforce-status-check | false | Will fail a status check for vulnerabilities found
-| file-name | 'security-scan-artifacts' | Name for zip file of scan artifacts
+| file-name | 'ci-security-scan-results.sarif' | Name for zip file of scan artifacts
 
+### security-scan
 To set up this workflow, create a new file, `{repo_root}/.github/workflows/security-scan.yml` and paste in the following:
 
 ```yaml
@@ -35,3 +53,18 @@ jobs:
         name: 'Untamed Theory Security Scan'
         uses: untamed-theory/shared-workflows/.github/workflows/security-scan.yml@main
 ```
+
+This is a quick, holistic scan of the source code in your repo leveraging the [ShiftLeft Scanner](https://github.com/ShiftLeftSecurity/sast-scan). It is capable of blocking Pull Request status checks for vulnerabilities found (Critical and High). Or it can conduct non-blocking scans while still producing an artifact. 
+
+It will automatically assess and run the following (where applicable):
+- Static Code Analysis
+- Dependency Vulnerability Scans
+- Credential Detection Scans
+- Infrastructure as Code (IaC) Analysis
+- Dockerfile and Kubernetes Analysis
+
+| Parameter | Default| Description
+| --- | --- | --- |
+| enforce-status-check | false | Will fail a status check for vulnerabilities found
+| file-name | 'security-scan-artifacts' | Name for zip file of scan artifacts
+
