@@ -38,8 +38,8 @@ jobs:
       - name: Upload CI Scan Results
         uses: actions/upload-artifact@v3
         with: 
-          name: CI Sarif File Artifact
-          path: ${{ inputs.file-name }}
+          name: ${{ inputs.file-name }}
+          path: ./
           retention-days: 5
 
 
