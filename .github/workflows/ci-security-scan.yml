@@ -1,0 +1,46 @@
+name: Untamed Theory - Static Security Scan
+
+on: 
+  workflow_call:
+    inputs:
+      enforce-status-check:
+        description: 'Set to "true" to block status from vulnerability findings (defaults "false")'
+        default: false
+        required: false
+        type: boolean
+      file-name:
+        description: 'Set results file name. Overwrites the default name "ci-security-scan-results.sarif"'
+        default: ci-security-scan-results.sarif
+        required: false
+        type: string
+
+jobs:
+  GitHub-Action-Scans:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Scan CI Files - Status Check Enforced
+        if: ${{ inputs.enforce-status-check }}
+        uses: bridgecrewio/checkov-action@master
+        with:
+          framework: github_actions,gitlab_ci,bitbucket_pipelines
+          output_format: cli,sarif
+          output_file_path: console,${{ inputs.file-name }}
+      - name: Scan CI Files - Soft Fail
+        if: ${{ !inputs.enforce-status-check }}
+        uses: bridgecrewio/checkov-action@master
+        with:
+          framework: github_actions gitlab_ci bitbucket_pipelines
+          soft_fail: true
+          output_format: cli,sarif
+          output_file_path: console,${{ inputs.file-name }}
+      - name: Upload CI Scan Results
+        uses: actions/upload-artifact@v3
+        with: 
+          name: CI Sarif File Artifact
+          path: ${{ inputs.file-name }}
+          retention-days: 5
+
+
+
