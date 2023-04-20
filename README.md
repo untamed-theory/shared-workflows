@@ -1,8 +1,12 @@
-# Shared Workflows for GitHub Actions
+# Shared Workflows 
+
+... for GitHub Actions
 
 This repo contains [GitHub Action Reusable Workflows](https://docs.github.com/en/actions/using-workflows/reusing-workflows) which may be called from other workflows in other repositories. These can be used to better secure your code and CI/CD pipeline.
 
 Click the workflows below to expand for details
+
+<br>
 
 ## Workflows
 <details>
