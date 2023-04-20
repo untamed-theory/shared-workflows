@@ -3,8 +3,8 @@
 This repo contains [GitHub Action Reusable Workflows](https://docs.github.com/en/actions/using-workflows/reusing-workflows) which may be called from other workflows in other repositories. These can be used to better secure your code and CI/CD pipeline.
 
 ## Workflows
-
-### ci-security-scan
+<details>
+<summary>## ci-security-scan</summary>
 To set up the CI security workflow, create a new file, `{repo_root}/.github/workflows/ci-security-scan.yml` and paste in the folowing:
 
 ```yaml
@@ -35,7 +35,7 @@ It will detect and assess:
 | --- | --- | --- |
 | enforce-status-check | false | Will fail a status check for vulnerabilities found
 | file-name | 'ci-security-scan-results.sarif' | Name for zip file of scan artifacts
-
+</details>
 ### security-scan
 To set up this workflow, create a new file, `{repo_root}/.github/workflows/security-scan.yml` and paste in the following:
 
